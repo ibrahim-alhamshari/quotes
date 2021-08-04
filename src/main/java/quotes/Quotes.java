@@ -6,14 +6,14 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Map;
 
-public class Contants {
+public class Quotes {
 
     private String author;
     private String likes;
     private String text;
     private ArrayList<String> tags = new ArrayList<>();
 
-    public Contants(Map randomItem) {
+    public Quotes(Map randomItem) {
       this.author= (String) randomItem.get("author");
       this.likes = (String) randomItem.get("likes");
       this.text = (String) randomItem.get("text");
@@ -31,11 +31,11 @@ public class Contants {
 
     @Override
     public String toString() {
-        return "Contants{" +
-                "author='" + author + '\'' +
-                ", likes='" + likes + '\'' +
-                ", text='" + text + '\'' +
-                ", tags=" + tags +
+        return "Contants:{" +
+                "author: '" + author + '\'' +
+                ", likes: '" + likes + '\'' +
+                ", tags: " + tags +
                 '}';
+
     }
 }

@@ -3,12 +3,27 @@
  */
 package quotes;
 
+import com.google.gson.Gson;
 import org.junit.Test;
+
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.util.List;
+import java.util.Map;
+
 import static org.junit.Assert.*;
 
 public class AppTest {
     @Test public void testAppHasAGreeting() {
         App classUnderTest = new App();
         assertNotNull("app should have a greeting", classUnderTest.getGreeting());
+    }
+    @Test public void convertFromJson() throws FileNotFoundException {
+        FileReader fileReader = new FileReader("src/main/java/recentquotes.json");
+        Gson gson = new Gson();
+        List<Map> list =gson.fromJson(fileReader , List.class);
+        Quotes quotes = new Quotes(list.get(6));
+
+        assertEquals("Contants:{author: 'Louis Armstrong', likes: '23 likes', tags: [trumpet-gods]}" , quotes.toString() );
     }
 }

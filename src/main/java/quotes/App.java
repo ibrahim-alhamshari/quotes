@@ -4,9 +4,7 @@
 package quotes;
 
 import com.google.gson.Gson;
-import com.google.gson.JsonElement;
 
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.List;
@@ -19,7 +17,7 @@ public class App {
 
     public static void main(String[] args) throws IOException {
 
-//        System.out.println(new App().getGreeting());
+        System.out.println(new App().getGreeting());
 
         FileReader fileReader = new FileReader("src/main/java/recentquotes.json");
         Gson gson = new Gson();
@@ -32,7 +30,7 @@ public class App {
 
         Map randomItem = list.get(j);
 
-        Contants contants = new Contants(randomItem);
+        Quotes quotes = new Quotes(randomItem);
 
 
 
