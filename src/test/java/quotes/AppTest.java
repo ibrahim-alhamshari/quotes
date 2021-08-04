@@ -24,6 +24,16 @@ public class AppTest {
         List<Map> list =gson.fromJson(fileReader , List.class);
         Quotes quotes = new Quotes(list.get(6));
 
-        assertEquals("Contants:{author: 'Louis Armstrong', likes: '23 likes', tags: [trumpet-gods]}" , quotes.toString() );
+        assertEquals("Contants:{author: 'Louis Armstrong', text: What we play is life.\"}" , quotes.toString() );
     }
+
+    @Test public void convertFromJson2() throws FileNotFoundException {
+        FileReader fileReader = new FileReader("src/main/java/recentquotes.json");
+        Gson gson = new Gson();
+        List<Map> list =gson.fromJson(fileReader , List.class);
+        Quotes quotes = new Quotes(list.get(10));
+
+        assertEquals("Contants:{author: 'Chuck Klosterman', text: It's easier to believe there's a monster under the bed if you've spent the last six months arguing with a monster.\"}" , quotes.toString() );
+    }
+
 }
