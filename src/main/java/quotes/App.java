@@ -21,7 +21,6 @@ public class App {
 
         FileReader fileReader = new FileReader("src/main/java/recentquotes.json");
         Gson gson = new Gson();
-
         List<Map> list =gson.fromJson(fileReader , List.class);
 
         int min=0;
