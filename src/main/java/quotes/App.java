@@ -9,10 +9,6 @@ import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.nio.file.StandardOpenOption;
 import java.util.List;
 import java.util.Map;
 
@@ -24,56 +20,56 @@ public class App {
     public static void main(String[] args) throws IOException {
 
         System.out.println(new App().getGreeting());
+        String apiUrl = "https://favqs.com/api/qotd";
+        quotesAndAPI(apiUrl);
+    }
 
+    public static boolean quotesAndAPI(String apiUrl) throws FileNotFoundException {
         FileReader fileReader = new FileReader("src/main/java/recentquotes.json");
         Gson gson = new Gson();
-        List<Map> list =gson.fromJson(fileReader , List.class);
-        int min=0;
-        int max =list.size() -1 ;
-        int j = (int) (Math.random()*(max-min+1)+min);
+        List<Map> list = gson.fromJson(fileReader, List.class);
+        int min = 0;
+        int max = list.size() - 1;
+        int j = (int) (Math.random() * (max - min + 1) + min);
 
         Map randomItem = list.get(j);
 
 
-
         StringBuilder stringBuilder = new StringBuilder();
-        String apiUrl = "https://favqs.com/api/qotd";
+
         try {
-        URL url = new URL(apiUrl);
-        HttpURLConnection connection= (HttpURLConnection) url.openConnection();
-        connection.setRequestMethod("GET");
-        connection.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.11 (KHTML, like Gecko) Chrome/23.0.1271.95 Safari/537.11");
-        int status = connection.getResponseCode();
+            URL url = new URL(apiUrl);
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setRequestMethod("GET");
+            connection.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.11 (KHTML, like Gecko) Chrome/23.0.1271.95 Safari/537.11");
+            int status = connection.getResponseCode();
 
-        if(status == 200) {
-            InputStream inputStream = connection.getInputStream();
-            InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
-            BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
-        String line = bufferedReader.readLine();
-            while(line != null){
-                System.out.println(line);
-                line = bufferedReader.readLine();
-                if (line != null) {
-                    stringBuilder.append(line);
+            if (status == 200) {
+                InputStream inputStream = connection.getInputStream();
+                InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
+                BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+                String line = bufferedReader.readLine();
+                while (line != null) {
+
+                    stringBuilder.append(line + "\r\n");
+                    line = bufferedReader.readLine();
+
                 }
+                FileOutputStream information = new FileOutputStream("src/main/java/addingFromAPI.json", true);
+                information.write(stringBuilder.toString().getBytes());
+                information.close();
+                System.out.println(stringBuilder.toString());
+            } else {
+                System.out.println("An error occurred with status " + status);
             }
-            bufferedReader.close();
-            FileWriter fileToWrite = new FileWriter("addingFromAPI.json");
-            fileToWrite.write(stringBuilder.toString());
-            fileToWrite.close();
-
-
-        }else{
-            System.out.println("An error occurred with status "+status);
-        }
             connection.disconnect();
-        }catch (MalformedURLException e) {
-            System.out.println("An error occurred with status ");
+                return true;
+        } catch (MalformedURLException e) {
             Quotes quotes = new Quotes(randomItem);
-        } catch (IOException e){
-            System.out.println("An error occurred with status ");
+        } catch (IOException e) {
             Quotes quotes = new Quotes(randomItem);
         }
-        }
+        return false;
     }
+}
 
